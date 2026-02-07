@@ -1,8 +1,15 @@
 /* =========================
+   ボックスモデル修正
+========================= */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* =========================
    全体
 ========================= */
-
-
 body {
     font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
     background: linear-gradient(
@@ -15,6 +22,61 @@ body {
     margin: 0;
     padding: 0;
     line-height: 1.7;
+    min-height: 100vh;
+}
+
+/* =========================
+   ヘッダー / ナビバー
+========================= */
+header {
+    margin-bottom: 8px;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-brand {
+    font-size: 13px;
+    font-weight: 600;
+    color: #d97a6a;
+    text-decoration: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.navbar-brand:hover {
+    background: rgba(217, 122, 106, 0.08);
+}
+
+.navbar-collapse {
+    margin-left: auto;
+}
+
+.navbar-nav {
+    display: flex;
+    gap: 8px;
+    list-style: none;
+}
+
+.navbar-nav li a {
+    font-size: 12px;
+    font-weight: 500;
+    color: #a66a5e;
+    text-decoration: none;
+    padding: 4px 12px;
+    border: 1px solid #f0c5cf;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.navbar-nav li a:hover {
+    background: linear-gradient(135deg, #ffe0d9, #ffd6e3);
+    border-color: transparent;
+    color: #d97a6a;
 }
 
 /* =========================
@@ -26,17 +88,9 @@ body {
     background: #ffffff;
     padding: 36px 40px 48px;
     box-shadow: 0 16px 40px rgba(243, 166, 184, 0.25);
-    border-radius: 8px; /* 丸み控えめ */
+    border-radius: 8px;
     position: relative;
 }
-
-/* =========================
-   MAP
-========================= */
-#mapcontainer {
-margin:0 auto;
-}
-
 
 /* =========================
    上部装飾（index用）
@@ -45,8 +99,9 @@ margin:0 auto;
     position: absolute;
     top: 0;
     left: 0;
-    height: 10px;
+    height: 6px;
     width: 100%;
+    border-radius: 8px 8px 0 0;
     background: linear-gradient(
         90deg,
         #ff9a8b,
@@ -61,7 +116,7 @@ margin:0 auto;
 h1 {
     text-align: center;
     margin: 24px 0 32px;
-    font-size: 26px;
+    font-size: 24px;
     font-weight: 600;
     color: #d97a6a;
     letter-spacing: 0.08em;
@@ -72,43 +127,60 @@ h1 {
 ========================= */
 .data_input,
 .form_input {
-    margin-bottom: 26px;
+    margin-bottom: 24px;
 }
 
 /* ラベル */
 label {
     display: block;
-    font-size: 14px;
-    margin-bottom: 8px;
+    font-size: 13px;
+    margin-bottom: 6px;
     color: #a66a5e;
-    font-weight: 500;
+    font-weight: 600;
+    letter-spacing: 0.03em;
 }
 
 /* =========================
-   テキスト入力
+   テキスト入力・パスワード入力
 ========================= */
-input[type="text"] {
+input[type="text"],
+input[type="password"] {
     width: 100%;
     padding: 12px 14px;
     font-size: 15px;
     border-radius: 6px;
-    border: 1px solid #f0c5cf;
-    background: #fffdfd;
-    transition: border 0.25s ease, box-shadow 0.25s ease;
+    border: 1px solid #e8d0d6;
+    background: #fffcfd;
+    color: #4a4a4a;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
-input[type="text"]:focus {
+input[type="text"]:focus,
+input[type="password"]:focus {
     outline: none;
     border-color: #9ad0f5;
-    box-shadow: 0 0 0 3px rgba(154, 208, 245, 0.35);
+    box-shadow: 0 0 0 3px rgba(154, 208, 245, 0.3);
 }
 
 /* =========================
    ファイル入力
 ========================= */
 input[type="file"] {
-    font-size: 14px;
+    display: block;
+    width: 100%;
+    font-size: 13px;
+    padding: 10px 12px;
+    border: 1px dashed #e0c0c8;
+    border-radius: 6px;
+    background: #fffbfc;
     cursor: pointer;
+    color: #888;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+input[type="file"]:hover {
+    border-color: #d9a0b0;
+    background: #fff6f8;
 }
 
 /* =========================
@@ -116,13 +188,13 @@ input[type="file"] {
 ========================= */
 input[type="submit"] {
     width: 100%;
-    margin-top: 10px;
+    margin-top: 12px;
     padding: 14px 0;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
     letter-spacing: 0.08em;
     border: none;
-    border-radius: 6px; /* 丸すぎない */
+    border-radius: 6px;
     cursor: pointer;
 
     background: linear-gradient(
@@ -134,62 +206,60 @@ input[type="submit"] {
     color: #ffffff;
 
     box-shadow:
-        0 10px 0 #e88fa3,
-        0 18px 30px rgba(255, 154, 139, 0.4);
+        0 6px 0 #e88fa3,
+        0 14px 28px rgba(255, 154, 139, 0.3);
 
-    transition: all 0.25s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* hover：少しポップに */
 input[type="submit"]:hover {
-    transform: translateY(-3px);
+    transform: translateY(-2px);
     box-shadow:
-        0 14px 0 #e88fa3,
-        0 26px 36px rgba(154, 208, 245, 0.45);
+        0 8px 0 #e88fa3,
+        0 20px 32px rgba(154, 208, 245, 0.35);
 }
 
-/* active：押し込み */
 input[type="submit"]:active {
-    transform: translateY(4px);
+    transform: translateY(3px);
     box-shadow:
-        0 4px 0 #e88fa3,
-        0 10px 18px rgba(255, 154, 139, 0.35);
+        0 2px 0 #e88fa3,
+        0 6px 14px rgba(255, 154, 139, 0.3);
 }
 
 /* =========================
    プレースホルダー
 ========================= */
 ::placeholder {
-    color: #c9a5ab;
+    color: #c5a5ad;
+    font-size: 14px;
 }
 
 /* =========================
    一覧に戻るボタン（サブ）
 ========================= */
-.decoration_c{
-padding-top: 30px;;
-display: flex;
-justify-content: center;
+.decoration_c {
+    padding-top: 28px;
+    display: flex;
+    justify-content: center;
 }
 
 #return_select_btn {
-    padding: 12px 28px;
+    padding: 11px 28px;
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 0.06em;
 
-    border-radius: 6px; /* 控えめ */
-    border: 1px solid #f0c5cf;
+    border-radius: 6px;
+    border: 1px solid #e8d0d6;
     background: #ffffff;
     color: #d97a6a;
 
     cursor: pointer;
 
-    box-shadow: 0 6px 14px rgba(243, 166, 184, 0.25);
-    transition: all 0.25s ease;
+    box-shadow: 0 4px 12px rgba(243, 166, 184, 0.2);
+    transition: all 0.2s ease;
 }
 
-/* hover：軽く浮く＋色が乗る */
 #return_select_btn:hover {
     background: linear-gradient(
         135deg,
@@ -198,18 +268,63 @@ justify-content: center;
         #e6f1fb
     );
     transform: translateY(-2px);
-    box-shadow: 0 10px 22px rgba(154, 208, 245, 0.45);
+    box-shadow: 0 8px 20px rgba(154, 208, 245, 0.35);
+    border-color: transparent;
 }
 
-/* active：押し込み */
 #return_select_btn:active {
     transform: translateY(1px);
-    box-shadow: 0 4px 10px rgba(243, 166, 184, 0.25);
+    box-shadow: 0 2px 8px rgba(243, 166, 184, 0.2);
 }
 
-
-#mapcontainer{
-    width: 600px;
-    height: 600px;
+/* =========================
+   ログインフォーム
+========================= */
+fieldset {
+    border: none;
+    padding: 0;
 }
 
+legend {
+    font-size: 22px;
+    font-weight: 600;
+    color: #d97a6a;
+    letter-spacing: 0.08em;
+    margin-bottom: 24px;
+    text-align: center;
+    width: 100%;
+}
+
+fieldset label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+fieldset label span {
+    min-width: 32px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #a66a5e;
+}
+
+/* =========================
+   レスポンシブ
+========================= */
+@media (max-width: 600px) {
+    #form {
+        margin: 20px 16px 60px;
+        padding: 28px 24px 36px;
+    }
+
+    h1 {
+        font-size: 20px;
+        margin: 20px 0 24px;
+    }
+
+    input[type="submit"] {
+        font-size: 14px;
+        padding: 12px 0;
+    }
+}

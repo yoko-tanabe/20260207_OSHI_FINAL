@@ -70,13 +70,13 @@ if ($status == false) {
 
     //画面表示用
     $view .= '<p>';
-    $view .= h($result['NAME']) . ' ' . h($result['URL']) . ' ' . h($result['COMMENT']);
+    $view .= h($result['NAME']);
     //$view = $result['date'].$result['name'].$result['email'].$result['date']; にするとWhileが回るたびに上書きされてしまう
-    $view .= '<a href="detail.php?id=' . $result['ID'] . '">';
+    $view .= '<a href="detail.php?id=' . $result['id'] . '">';
     $view .= ':更新';
 
     if ($_SESSION['kanri_flg'] === 1) {
-      $view .= '<a  href="delete.php?id=' . $result['ID'] . '">';
+      $view .= '<a  href="delete.php?id=' . $result['id'] . '">';
       $view .= ':削除';
       $view .= '</a>';
     }
@@ -95,7 +95,7 @@ if ($status == false) {
       ];
   
   }
-  var_dump($locations);
+  // var_dump($locations);
 }
 
 ?>
@@ -225,22 +225,13 @@ function handleLocationFound(current) {
     console.log(loc.name, distance);
 
     if (distance <= 500 &&distance >= 101 && !alerted) {
-      // alert(`OSHIの気配に近づきました！　${loc.name} のエリアに入りました！`);
-      alert(
-        `OSHIの気配に近づきました！\n` +
-        `${loc.name}のエリアに入りました！\n\n` 
-      );
+      showDiscoverPopup(loc.name);
       alerted = true;
     }
 
 
 if (distance <= 100 && !alerted) {
-      // alert(`OSHIの気配に近づきました！　${loc.name} のエリアに入りました！`);
-      alert(
-        `元気になるOSHIの言葉\n` +
-        `＝＝＝＝＝＝＝＝＝＝＝＝＝\n` +
-        `${loc.message ?? "メッセージはまだありません"}`
-      );
+      showOshiPopup(loc.message ?? "メッセージはまだありません");
       alerted = true;
     }
 
@@ -289,6 +280,67 @@ map.on('locationfound', function(e) {
   
 
   </script>
+  <!-- 発見ポップアップ（500m圏内） -->
+  <div id="discover-popup-overlay" class="discover-popup-overlay">
+    <div class="discover-popup">
+      <div class="discover-popup-accent"></div>
+      <div class="discover-popup-burst"></div>
+      <div class="discover-popup-star discover-popup-star--1"></div>
+      <div class="discover-popup-star discover-popup-star--2"></div>
+      <div class="discover-popup-star discover-popup-star--3"></div>
+      <div class="discover-popup-star discover-popup-star--4"></div>
+      <p class="discover-popup-icon">&#x2728;</p>
+      <p class="discover-popup-label">OSHIの気配を感知！</p>
+      <p class="discover-popup-name" id="discover-popup-name"></p>
+      <p class="discover-popup-sub">のエリアに入りました</p>
+      <button class="discover-popup-close" id="discover-popup-close">探しに行く！</button>
+    </div>
+  </div>
+
+  <script>
+    function showDiscoverPopup(name) {
+      document.getElementById('discover-popup-name').textContent = name;
+      document.getElementById('discover-popup-overlay').classList.add('is-visible');
+    }
+    document.getElementById('discover-popup-close').addEventListener('click', function() {
+      document.getElementById('discover-popup-overlay').classList.remove('is-visible');
+    });
+    document.getElementById('discover-popup-overlay').addEventListener('click', function(e) {
+      if (e.target === this) {
+        this.classList.remove('is-visible');
+      }
+    });
+  </script>
+
+  <!-- OSHIの言葉ポップアップ（100m圏内） -->
+  <div id="oshi-popup-overlay" class="oshi-popup-overlay">
+    <div class="oshi-popup">
+      <div class="oshi-popup-accent"></div>
+      <div class="oshi-popup-sparkle oshi-popup-sparkle--1"></div>
+      <div class="oshi-popup-sparkle oshi-popup-sparkle--2"></div>
+      <div class="oshi-popup-sparkle oshi-popup-sparkle--3"></div>
+      <p class="oshi-popup-label">元気になるOSHIの言葉</p>
+      <div class="oshi-popup-divider"></div>
+      <p class="oshi-popup-message" id="oshi-popup-message"></p>
+      <button class="oshi-popup-close" id="oshi-popup-close">ありがとう</button>
+    </div>
+  </div>
+
+  <script>
+    function showOshiPopup(message) {
+      document.getElementById('oshi-popup-message').textContent = message;
+      document.getElementById('oshi-popup-overlay').classList.add('is-visible');
+    }
+    document.getElementById('oshi-popup-close').addEventListener('click', function() {
+      document.getElementById('oshi-popup-overlay').classList.remove('is-visible');
+    });
+    document.getElementById('oshi-popup-overlay').addEventListener('click', function(e) {
+      if (e.target === this) {
+        this.classList.remove('is-visible');
+      }
+    });
+  </script>
+
   <!-- 装飾要素 -->
   <div class="decoration_h"></div>
   <h1 id="title"> Google Map URL 一覧</h1>
